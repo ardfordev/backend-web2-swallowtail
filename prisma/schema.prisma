@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  username String  @id @db.VarChar(100)
+  password String  @db.VarChar(100)
+  name     String  @db.VarChar(100)
+  role     String  @db.VarChar(20)
+  token    String? @db.VarChar(100)
+
+  @@map("users")
+}
+
+model Substation {
+  id         Int    @id @default(autoincrement())
+  name       String @db.VarChar(100)
+  address    String @db.VarChar(100)
+  contact    String @db.VarChar(15)
+  ip_address String @db.VarChar(15)
+  dcc        String @db.VarChar(15)
+
+  @@map("substation")
+}
+
+model Feeder {
+  id                      Int      @id @default(autoincrement())
+  date_of_commisioning    DateTime
+  protocol_rtu_address    String   @db.VarChar(20)
+  name                    String   @db.VarChar(100)
+  communication_media     String   @db.VarChar(10)
+  substation              String   @db.VarChar(100)
+  rtu_brands              String   @db.VarChar(20)
+  ts_cbo                  String[]
+  ts_cbc                  String[]
+  ts_local                String[]
+  ts_remote               String[]
+  ts_ocrd                 String[]
+  ts_ocra                 String[]
+  ts_ocrid                String[]
+  ts_ocria                String[]
+  ts_dgrd                 String[]
+  ts_dgra                 String[]
+  ts_cbtrd                String[]
+  ts_cbtra                String[]
+  ts_ard                  String[]
+  ts_ara                  String[]
+  ts_arud                 String[]
+  ts_arua                 String[]
+  ts_tcd                  String[]
+  ts_tca                  String[]
+  tc_cbo                  String[]
+  tc_cbc                  String[]
+  tc_aru_use              String[]
+  tc_aru_unuse            String[]
+  tc_reset                String[]
+  tc_tc_raiser            String[]
+  tc_tc_lower             String[]
+  tm_phase_r_current      Int[]
+  tm_phase_s_current      Int[]
+  tm_phase_t_current      Int[]
+  tm_power                Int[]
+  tm_voltage              Int[]
+  tm_phase_r_faultcurrent Int[]
+  tm_phase_s_faultcurrent Int[]
+  tm_phase_t_faultcurrent Int[]
+  tm_phase_n_faultcurrent Int[]
+  commisioning_types      String   @db.VarChar(15)
+  ms_engineer             String   @db.VarChar(100)
+  rtu_engineer            String   @db.VarChar(100)
+  rtu_reviewer            String   @db.VarChar(100)
+  description             String   @db.VarChar(100)
+  status                  String   @default("On Review") @db.VarChar(20)
+  is_valid                Boolean  @default(false)
+
+  @@map("feeder")
+}
